@@ -22,7 +22,7 @@ public class AuthController {
     //사용자 데이터를 입력받도록 로그인용 빈 종이 출력
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "auth/login";
     }
 
     // 사용자 데이터를 입력받도록 회원가입용 빈 종이 출력
@@ -42,6 +42,7 @@ public class AuthController {
             return "auth/signup";
         }
 
+        userService.register(signUpRequest);
 
         return "redirect:/auth/login";
     }
