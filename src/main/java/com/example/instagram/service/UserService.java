@@ -7,4 +7,5 @@ public interface UserService {
 
     User register(SignUpRequest signUpRequest);
 
+    boolean existsByUsername(String username);
 }

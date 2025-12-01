@@ -42,6 +42,13 @@ public class AuthController {
             return "auth/signup";
         }
 
+        // username 중복검증
+        if (userService.existsByUsername(signUpRequest.getUsername())) {
+            bindingResult.rejectValue("username", "duplicate", "중복된 아이디 입니다");
+            return "auth/signup";
+
+        }
+
         userService.register(signUpRequest);
 
         return "redirect:/auth/login";
