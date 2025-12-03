@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <title th:text="${profile.username} + ' - 프로필'">프로필</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- 프로필 헤더 -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <!-- 프로필 이미지 -->
+<!--                        <div class="col-md-3 text-center">-->
+<!--                            <img th:src="${profile.profileImageUrl != null ? profile.profileImageUrl : '/images/default-profile.png'}"-->
+<!--                                 class="rounded-circle img-thumbnail"-->
+<!--                                 width="150" height="150"-->
+<!--                                 alt="프로필 이미지">-->
+<!--                        </div>-->
+
+                        <!-- 프로필 정보 -->
+                        <div class="col-md-9">
+                            <div class="d-flex align-items-center mb-3">
+                                <h4 class="mb-0 me-3" th:text="${profile.username}">username</h4>
+
+                                <!-- 본인 프로필인 경우: 프로필 편집 버튼 -->
+                                <a th:if="${isOwner}"
+                                   href="/profile/edit"
+                                   class="btn btn-outline-secondary btn-sm">
+                                    프로필 편집
+                                </a>
+
+                                <!-- 다른 사용자 프로필인 경우: 팔로우 버튼 -->
+                                <div th:unless="${isOwner}" sec:authorize="isAuthenticated()">
+                                    <form th:action="@{'/users/' + ${profile.username} + '/follow'}"
+                                          method="post" class="d-inline">
+                                        <button type="submit"
+                                                th:class="${isFollowing} ? 'btn btn-outline-secondary btn-sm' : 'btn btn-primary btn-sm'"
+                                                th:text="${isFollowing} ? '팔로잉' : '팔로우'">
+                                            팔로우
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- 통계 -->
+                            <div class="d-flex mb-3">
+                                <div class="me-4">
+                                    <span class="fw-bold" th:text="${profile.postCount}">0</span>
+                                    <span class="text-muted">게시물</span>
+                                </div>
+                                <a th:href="@{'/users/' + ${profile.username} + '/followers'}"
+                                   class="me-4 text-decoration-none text-dark">
+                                    <span class="fw-bold" th:text="${profile.followerCount}">0</span>
+                                    <span class="text-muted">팔로워</span>
+                                </a>
+                                <a th:href="@{'/users/' + ${profile.username} + '/following'}"
+                                   class="text-decoration-none text-dark">
+                                    <span class="fw-bold" th:text="${profile.followingCount}">0</span>
+                                    <span class="text-muted">팔로잉</span>
+                                </a>
+                            </div>
+
+                            <!-- 이름과 자기소개 -->
+                            <div>
+                                <span class="fw-bold" th:text="${profile.name}">이름</span>
+                                <p th:if="${profile.bio != null}"
+                                   th:text="${profile.bio}"
+                                   class="mb-0 mt-1">자기소개</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 게시물 목록 -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-grid-3x3"></i> 게시물
+                </div>
+                <div class="card-body">
+                    <div th:if="${#lists.isEmpty(posts)}" class="text-center text-muted py-5">
+                        아직 게시물이 없습니다.
+                    </div>
+
+                    <div class="row g-2">
+                        <div th:each="post : ${posts}" class="col-4">
+                            <a th:href="@{'/posts/' + ${post.id}}">
+                                <div class="ratio ratio-1x1 bg-light border">
+                                    <div class="d-flex align-items-center justify-content-center p-2">
+                                        <small class="text-muted text-truncate"
+                                               th:text="${#strings.abbreviate(post.content, 50)}">
+                                            게시물 내용
+                                        </small>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
