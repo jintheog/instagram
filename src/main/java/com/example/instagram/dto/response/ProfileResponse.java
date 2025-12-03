@@ -20,6 +20,7 @@ public class ProfileResponse {
     // Entity => DTO
     public static ProfileResponse from(User user) {
         return ProfileResponse.builder()
+                .id(user.getId())
                 .username(user.getUsername())
                 .bio(user.getBio())
                 .name(user.getName())

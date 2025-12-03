@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly=true)
@@ -22,14 +24,32 @@ public class FollowServiceImpl implements FollowService {
          User follower = userService.findById(followerId);
          User following = userService.findByUsername(followingUsername);
 
-         Follow follow = Follow.builder()
-                         .follower(follower)
-                        .following(following)
-                        .build();
+         // 자기 자신 팔로우 방지
+        if(follower.getId().equals(following.getId())) {
+          throw new RuntimeException("자기 자신은 팔로우 할 수 없습니다. ");
+        }
 
-         followRepository.save(follow);
+        Optional<Follow> existingFollow = followRepository
+                .findByFollowerIdAndFollowingId(follower.getId(), following.getId());
+        // following toggle
+        if (existingFollow.isPresent()) { //이미 팔로우중 이라면
+            followRepository.delete(existingFollow.get());
+        } else { //팔로우중이 아니라면
+            Follow follow = Follow.builder()
+                    .follower(follower)
+                    .following(following)
+                    .build();
+
+            followRepository.save(follow);
+        }
     }
 
+    @Override
+    public boolean isFollowing(Long followerId, Long followingId) {
+        return followRepository.existsByFollowerIdAndFollowingId(
+                followerId, followingId
+        );
+    }
 
 
 }
