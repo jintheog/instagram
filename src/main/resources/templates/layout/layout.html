@@ -24,9 +24,16 @@
                 <a href="/posts/new" class="btn btn-outline-secondary me-2">
                     <i class="bi bi-plus-square"></i>
                 </a>
-                <a th:href="@{'/users/' + ${#authentication.name}}" class="btn btn-outline-secondary">
+                <a th:href="@{'/users/' + ${#authentication.name}}" class="btn btn-outline-secondary me-2">
                     <i class="bi bi-person"></i>
                 </a>
+
+                <form th:action="@{/auth/logout}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-secondary">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </button>
+                </form>
+
             </div>
 
             <!-- 로그인하지 않은 경우 -->
