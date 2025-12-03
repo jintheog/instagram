@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
 <head>
@@ -12,9 +13,9 @@
             <div class="card">
                 <!-- 작성자 정보 -->
                 <div class="card-header d-flex align-items-center">
-<!--                    <img th:src="${post.profileImageUrl != null ? post.profileImageUrl : '/images/default-profile.png'}"-->
-<!--                         class="rounded-circle me-2" width="32" height="32"-->
-<!--                         alt="프로필 이미지">-->
+                    <!--                    <img th:src="${post.profileImageUrl != null ? post.profileImageUrl : '/images/default-profile.png'}"-->
+                    <!--                         class="rounded-circle me-2" width="32" height="32"-->
+                    <!--                         alt="프로필 이미지">-->
                     <a th:href="@{'/users/' + ${post.username}}" class="fw-bold text-decoration-none text-dark">
                         <span th:text="${post.username}">username</span>
                     </a>
@@ -33,6 +34,59 @@
                     <form th:action="@{'/posts/' + ${post.id} + '/delete'}" method="post"
                           onsubmit="return confirm('정말 삭제하시겠습니까?');">
                         <button type="submit" class="btn btn-outline-danger btn-sm">삭제</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 댓글 섹션 -->
+            <div class="card mt-3">
+<!--                <div class="card-header">-->
+<!--                    <span th:text="'댓글 ' + ${comments.size()} + '개'">댓글 0개</span>-->
+<!--                </div>-->
+
+                <!-- 댓글 목록 -->
+<!--                <ul class="list-group list-group-flush">-->
+<!--                    <li th:each="comment : ${comments}" class="list-group-item">-->
+<!--                        <div class="d-flex justify-content-between align-items-start">-->
+<!--                            <div>-->
+<!--                                <a th:href="@{'/users/' + ${comment.username}}"-->
+<!--                                   class="fw-bold text-decoration-none text-dark">-->
+<!--                                    <span th:text="${comment.username}">username</span>-->
+<!--                                </a>-->
+<!--                                <span th:text="${comment.content}">댓글 내용</span>-->
+<!--                                <small class="text-muted d-block"-->
+<!--                                       th:text="${#temporals.format(comment.createdAt, 'MM월 dd일 HH:mm')}">-->
+<!--                                    01월 01일 12:00-->
+<!--                                </small>-->
+<!--                            </div>-->
+                            <!-- 댓글 삭제 버튼 (본인 댓글만) -->
+<!--                            <form th:if="${comment.userId == currentUserId}"-->
+<!--                                  th:action="@{'/posts/' + ${post.id} + '/comments/' + ${comment.id} + '/delete'}"-->
+<!--                                  method="post"-->
+<!--                                  onsubmit="return confirm('댓글을 삭제하시겠습니까?');">-->
+<!--                                <button type="submit" class="btn btn-link btn-sm text-danger p-0">-->
+<!--                                    <i class="bi bi-x"></i>-->
+<!--                                </button>-->
+<!--                            </form>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li th:if="${#lists.isEmpty(comments)}" class="list-group-item text-muted">-->
+<!--                        아직 댓글이 없습니다.-->
+<!--                    </li>-->
+<!--                </ul>-->
+
+                <!-- 댓글 작성 폼 (로그인한 경우만) -->
+                <div sec:authorize="isAuthenticated()" class="card-footer">
+                    <form th:action="@{'/posts/' + ${post.id} + '/comments'}"
+                          th:object="${commentRequest}" method="post">
+                        <div class="input-group">
+                            <input type="text" th:field="*{content}" class="form-control"
+                                   placeholder="댓글 달기..."
+                                   th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'">
+                            <button type="submit" class="btn btn-primary">게시</button>
+                        </div>
+                        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('content')}"
+                             th:errors="*{content}"></div>
                     </form>
                 </div>
             </div>
