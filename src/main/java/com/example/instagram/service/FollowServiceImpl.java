@@ -52,4 +52,14 @@ public class FollowServiceImpl implements FollowService {
     }
 
 
+    @Override
+    public long countByFollowerId(Long followerId){
+        return followRepository.countByFollowerId(followerId);
+    }
+    @Override
+    public long countByFollowingId(Long followingId) {
+       return followRepository.countByFollowingId(followingId);
+    }
+
+
 }

@@ -65,4 +65,9 @@ public class PostServiceImpl implements PostService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public long countByUserId(Long userId) {
+        return postRepository.countByUserId(userId);
+    }
+
 }
