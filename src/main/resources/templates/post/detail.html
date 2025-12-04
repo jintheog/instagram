@@ -13,9 +13,9 @@
             <div class="card">
                 <!-- 작성자 정보 -->
                 <div class="card-header d-flex align-items-center">
-                    <!--                    <img th:src="${post.profileImageUrl != null ? post.profileImageUrl : '/images/default-profile.png'}"-->
-                    <!--                         class="rounded-circle me-2" width="32" height="32"-->
-                    <!--                         alt="프로필 이미지">-->
+                    <img th:src="${post.profileImageUrl != null ? post.profileImageUrl : '/uploads/default-profile.png'}"
+                         class="rounded-circle me-2" width="32" height="32"
+                         alt="프로필 이미지">
                     <a th:href="@{'/users/' + ${post.username}}" class="fw-bold text-decoration-none text-dark">
                         <span th:text="${post.username}">username</span>
                     </a>

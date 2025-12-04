@@ -54,4 +54,8 @@ public class User {
         this.bio = bio;
     }
 
+    public void updateProfileImage(String profileImageUrl){
+        this.profileImageUrl = profileImageUrl;
+    }
+
 }

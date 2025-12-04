@@ -16,6 +16,7 @@ public class PostResponse {
 
     private Long userId;
     private String username;
+    private String profileImageUrl;
 
     private long commentCount;
     private long likeCount;
@@ -29,6 +30,7 @@ public class PostResponse {
                 .imageUrl(post.getImageUrl())
                 .userId(post.getUser().getId())
                 .username(post.getUser().getUsername())
+                .profileImageUrl(post.getUser().getProfileImageUrl())
                 .likeCount(0)
                 .commentCount(0)
                 .build();
@@ -42,6 +44,7 @@ public class PostResponse {
                 .imageUrl(post.getImageUrl())
                 .userId(post.getUser().getId())
                 .username(post.getUser().getUsername())
+                .profileImageUrl(post.getUser().getProfileImageUrl())
                 .likeCount(likeCount)
                 .commentCount(commentCount)
                 .build();
