@@ -34,6 +34,9 @@ public class User {
     @Column(length=200)
     private String bio;
 
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
+
 
     @Builder
     public User(String username, String password, String email, String name, Role role, String bio) {
@@ -46,10 +49,10 @@ public class User {
     }
 
 
-    public void updateProfile(String name, String bio) {
+    public void updateProfile(String name, String bio, String profileImageUrl) {
         this.name = name;
         this.bio = bio;
+        this.profileImageUrl = profileImageUrl;
     }
-
 
 }

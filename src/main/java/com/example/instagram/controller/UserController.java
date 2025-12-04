@@ -44,6 +44,9 @@ public class UserController {
         boolean isFollowing = followService.isFollowing(userDetails.getId(), profile.getId());
         model.addAttribute("isFollowing", isFollowing);
 
+        boolean isOwner = userDetails.getUsername().equals(username);
+        model.addAttribute("isOwner", isOwner);
+        
         return "user/profile";
     }
 
