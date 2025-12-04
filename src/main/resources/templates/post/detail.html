@@ -22,6 +22,10 @@
                 </div>
 
                 <!-- 게시물 내용 -->
+
+                <div th:if="${post.imageUrl}">
+                    <img th:src="${post.imageUrl}" alt="" class="img-fluid" style="height: 500px">
+                </div>
                 <div class="card-body">
                     <p class="card-text" th:text="${post.content}">게시물 내용</p>
                     <!-- 좋아요 버튼 시작 -->
