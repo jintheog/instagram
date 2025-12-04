@@ -49,10 +49,9 @@ public class User {
     }
 
 
-    public void updateProfile(String name, String bio, String profileImageUrl) {
+    public void updateProfile(String name, String bio) {
         this.name = name;
         this.bio = bio;
-        this.profileImageUrl = profileImageUrl;
     }
 
 }
