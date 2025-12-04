@@ -16,6 +16,9 @@ public class PostResponse {
     private Long userId;
     private String username;
 
+    private long commentCount;
+    private long likeCount;
+
     // Entity => DTO 변환
     public static PostResponse from(Post post){
         return PostResponse.builder()
@@ -24,6 +27,20 @@ public class PostResponse {
                 .createdAt(post.getCreatedAt())
                 .userId(post.getUser().getId())
                 .username(post.getUser().getUsername())
+                .likeCount(0)
+                .commentCount(0)
+                .build();
+    }
+
+    public static PostResponse from(Post post, long commentCount, long likeCount){
+        return PostResponse.builder()
+                .id(post.getId())
+                .content(post.getContent())
+                .createdAt(post.getCreatedAt())
+                .userId(post.getUser().getId())
+                .username(post.getUser().getUsername())
+                .likeCount(likeCount)
+                .commentCount(commentCount)
                 .build();
     }
 }
