@@ -14,7 +14,13 @@
                     <h5 class="mb-0">새 게시물 작성</h5>
                 </div>
                 <div class="card-body">
-                    <form th:action="@{/posts}" th:object="${postCreateRequest}" method="post">
+                    <form enctype="multipart/form-data" th:action="@{/posts}" th:object="${postCreateRequest}" method="post">
+                        <div class="mb-3">
+                            <label for="image" class="form-label">이미지</label>
+                            <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                            <div class="form-text">이미지 파일만 업로드가능합니다</div>
+                        </div>
+
                         <div class="mb-3">
                             <label for="content" class="form-label">내용</label>
                             <textarea th:field="*{content}" id="content" rows="5"
