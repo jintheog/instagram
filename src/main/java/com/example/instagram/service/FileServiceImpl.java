@@ -1,6 +1,8 @@
 package com.example.instagram.service;
 
 
+import com.example.instagram.exception.BusinessException;
+import com.example.instagram.exception.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,7 +35,8 @@ public class FileServiceImpl implements FileService {
             String extension = getExtension(originalFilename);
 
             if(!ALLOWED_EXTENSIONS.contains(extension.toLowerCase())){
-                throw new RuntimeException("Invalid file extension");
+//                throw new RuntimeException("Invalid file extension");
+                throw new BusinessException(ErrorCode.INVALID_FILE_TYPE);
             }
 
             Path uploadPath = Paths.get(uploadDir);

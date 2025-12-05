@@ -35,7 +35,7 @@
                                 </a>
 
                                 <!-- 다른 사용자 프로필인 경우: 팔로우 버튼 -->
-                                <div th:if ="${isOwner}" sec:authorize="isAuthenticated()">
+                                <div th:unless="${isOwner}" sec:authorize="isAuthenticated()">
                                     <form th:action="@{'/users/' + ${profile.username} + '/follow'}"
                                           method="post" class="d-inline">
                                         <button type="submit"
