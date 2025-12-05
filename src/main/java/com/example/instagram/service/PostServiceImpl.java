@@ -147,5 +147,24 @@ public class PostServiceImpl implements PostService {
 
     }
 
+    @Override
+    @Transactional
+    public void deletePost(Long postId) {
+        Post post = findById(postId);
+        postRepository.delete(post);
+    }
+
+    @Override
+    @Transactional
+    public void updatePost(Long postId, PostCreateRequest postUpdateRequest, MultipartFile postImage) {
+        Post post = findById(postId);
+
+        if(postImage != null && !postImage.isEmpty()){
+            String savedFileName = fileService.saveFile(postImage);
+            String imageUrl = "/uploads/" + savedFileName;
+            post.updatePostImage(imageUrl);
+        }
+        post.updatePost(postUpdateRequest.getContent());
+    }
 
 }

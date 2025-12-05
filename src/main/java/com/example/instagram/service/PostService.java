@@ -18,6 +18,8 @@ public interface PostService {
     long countByUserId(Long userId);
     List<PostResponse> getAllPostsWithStats();
 
+    void updatePost(Long postId, PostCreateRequest updatedPost, MultipartFile postImage);
+
     // 피드 조회
     Slice<PostResponse> getFeedPosts(Long userId, Pageable pageable);
 
@@ -25,4 +27,8 @@ public interface PostService {
     Slice<PostResponse> getAllPostsPaging(Pageable pageable);
 
     Slice<PostResponse> searchPosts(String keyword, Pageable pageable);
+
+    void deletePost(Long postId);
+
+
 }

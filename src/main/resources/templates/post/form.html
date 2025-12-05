@@ -11,13 +11,28 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0">새 게시물 작성</h5>
+                    <h5 class="mb-0"
+                        th:text="${isEdit} ? '게시물 수정' : '새 게시물 작성'"
+                    >새 게시물 작성</h5>
                 </div>
                 <div class="card-body">
-                    <form enctype="multipart/form-data" th:action="@{/posts}" th:object="${postCreateRequest}" method="post">
+                    <form enctype="multipart/form-data"
+                          th:object="${postCreateRequest}"
+                          th:action="${isEdit} ? @{/posts/{id}/edit(id=${post.id})} : @{/posts}"
+                          method="post">
+
+                        <div class="mb-3" th:if="${isEdit} and ${post.imageUrl} != null">
+                            <label class="form-label">현재 이미지</label>
+                            <div class="mb-2">
+                                <img th:src="${post.imageUrl}" alt="현재 이미지"
+                                     class="img-fluid" style="max-height:300px">
+                            </div>
+                            <div class="form-text">이미지를 변경하려면 아래에서 새 파일을 선택하세요.</div>
+                        </div>
+
                         <div class="mb-3">
-                            <label for="image" class="form-label">이미지</label>
-                            <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                            <label for="postImage" class="form-label">이미지</label>
+                            <input type="file" id="postImage" name="postImage" class="form-control" accept="image/*">
                             <div class="form-text">이미지 파일만 업로드가능합니다</div>
                         </div>
 
@@ -32,7 +47,9 @@
                         </div>
                         <div class="d-flex justify-content-between">
                             <a href="/" class="btn btn-outline-secondary">취소</a>
-                            <button type="submit" class="btn btn-primary">게시하기</button>
+                            <button type="submit" class="btn btn-primary"
+                                    th:text="${isEdit} ? '수정하기' : '게시하기'"
+                            >게시하기</button>
                         </div>
                     </form>
                 </div>

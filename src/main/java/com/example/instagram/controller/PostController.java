@@ -4,6 +4,7 @@ import com.example.instagram.dto.request.CommentRequest;
 import com.example.instagram.dto.request.PostCreateRequest;
 import com.example.instagram.dto.response.CommentResponse;
 import com.example.instagram.dto.response.PostResponse;
+import com.example.instagram.entity.Post;
 import com.example.instagram.security.CustomUserDetails;
 import com.example.instagram.service.CommentService;
 import com.example.instagram.service.LikeService;
@@ -31,6 +32,7 @@ public class PostController {
     @GetMapping("/new")
     public String createForm(Model model) {
         model.addAttribute("postCreateRequest", new PostCreateRequest());
+        model.addAttribute("isEdit", false);
         return "post/form";
     }
 
@@ -59,6 +61,11 @@ public class PostController {
         PostResponse post = postService.getPost(id);
 
         List<CommentResponse> comments = commentService.getComments(id);
+
+        if(userDetails != null) {
+            boolean isOwner = post.getUserId().equals(userDetails.getId());
+            model.addAttribute("isOwner", isOwner);
+        }
 
         model.addAttribute("post", post);
         model.addAttribute("commentRequest", new CommentRequest());
@@ -99,6 +106,52 @@ public class PostController {
     ) {
         likeService.toggleLike(id, userDetails.getId());
         return "redirect:/posts/" + id;
+    }
+
+    @GetMapping("/{id}/edit")
+    public String edit(
+        @PathVariable Long id, Model model
+    ) {
+        PostResponse post = postService.getPost(id);
+
+        PostCreateRequest postCreateRequest = new PostCreateRequest();
+        postCreateRequest.setContent(post.getContent());
+
+        model.addAttribute("postCreateRequest", postCreateRequest);
+        model.addAttribute("isEdit", true);
+        model.addAttribute("post", post);
+        return "post/form";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String update(
+            @PathVariable Long id,
+            @Valid @ModelAttribute PostCreateRequest updatedPostRequest,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            Model model,
+            @RequestParam(value = "postImage", required = false)MultipartFile postImage
+    ) {
+        if(bindingResult.hasErrors()){
+            PostResponse post = postService.getPost(id);
+            model.addAttribute("post", post);
+            return "post/form";
+        }
+
+        postService.updatePost(id, updatedPostRequest, postImage);
+
+        return "redirect:/posts/"+id;
+
+    }
+
+    @PostMapping("/{id}/delete")
+    public String delete(
+            @PathVariable Long id,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ){
+        postService.deletePost(id);
+
+        return "redirect:/users/"+userDetails.getUsername();
     }
 
 }
