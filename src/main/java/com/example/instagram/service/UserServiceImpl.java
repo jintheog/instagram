@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -89,4 +91,10 @@ public class UserServiceImpl implements UserService {
         }
         user.updateProfile(profileUpdateRequest.getName(), profileUpdateRequest.getBio());
     }
+
+    @Override
+    public List<UserResponse> searchUsers(String keyword){
+        return userRepository.searchByKeyword(keyword);
+    }
+
 }
