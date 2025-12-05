@@ -2,6 +2,8 @@ package com.example.instagram.service;
 
 import com.example.instagram.entity.Follow;
 import com.example.instagram.entity.User;
+import com.example.instagram.exception.BusinessException;
+import com.example.instagram.exception.ErrorCode;
 import com.example.instagram.repository.FollowRepository;
 import com.example.instagram.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +28,8 @@ public class FollowServiceImpl implements FollowService {
 
          // 자기 자신 팔로우 방지
         if(follower.getId().equals(following.getId())) {
-          throw new RuntimeException("자기 자신은 팔로우 할 수 없습니다. ");
+//          throw new RuntimeException("자기 자신은 팔로우 할 수 없습니다. ");
+            throw new BusinessException(ErrorCode.SELF_FOLLOW);
         }
 
         Optional<Follow> existingFollow = followRepository
