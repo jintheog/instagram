@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     boolean existsByUsername(String username);
 
     @Query("SELECT u FROM User u WHERE u.username LIKE %:keyword% OR u.name LIKE %:keyword%")
-    List<UserResponse> searchByKeyword(@Param("keyword") String keyword);
+    List<User> searchByKeyword(@Param("keyword") String keyword);
 
 
 }
