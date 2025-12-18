@@ -50,9 +50,9 @@ public class PostServiceImpl implements PostService {
                 .imageUrl(imageUrl)
                 .build();
 
-        Post saved = postRepository.save(post);
+        Post savedPost = postRepository.save(post);
 
-        return PostResponse.from(saved);
+        return PostResponse.from(savedPost);
     }
 
     @Override
